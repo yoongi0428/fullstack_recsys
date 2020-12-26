@@ -5,6 +5,9 @@ import './App.css';
 import CandidateList from './components/CandidateList'
 import ContextList from './components/ContextList'
 import RecommendList from './components/RecommendList'
+import CandidateTable from './components/CandidateTable'
+import ContextTable from './components/ContextTable'
+import RecommendTable from './components/RecommendTable'
 import { Container, Icon, Button } from "semantic-ui-react"
 
 class App extends React.Component {
@@ -107,26 +110,25 @@ class App extends React.Component {
             <a class="ui image label"><img src="/images/avatar/small/joe.jpg"/></a>
           </div>
         </header>
-        {/* <MovieForm onNewMovie={movie => setRecs(currentMovies => [...currentMovies, movie])} /> */}
         <Container style={{width: "90%", marginTop: 40, paddingBottom: 50, textAlign: "center"}}>
           {/* Full movie table */}
           <Container id="full" style={{margin: "0 auto", width: "50%", display: "inline-block", verticalAlign: "top"}}>
-            <CandidateList 
+              <CandidateTable 
               fullMovies={this.state.fullMovies} 
               candidateMovies={this.state.candidates}
               selectedMovies={this.state.selected}
               onEvent={this.onCandidateClick}
-              height={600}></CandidateList>
+              height={600}></CandidateTable>
           </Container>
   
           {/* Context table */}
           <Container id="selected" style={{margin: "0 auto", width: "50%", display: "inline-block", verticalAlign: "top"}}>
             {/* <MovieList movies={this.state.candidates} Height={600}/> */}
-            <ContextList 
+            <ContextTable
               fullMovies={this.state.fullMovies} 
               contextMovies={this.state.selected}
               onEvent={this.onSelectedClick}
-              height={600}></ContextList>
+              height={600}></ContextTable>
           </Container>
   
         </Container>
@@ -140,11 +142,11 @@ class App extends React.Component {
         <div style={{textAlign: "center"}}>
           <Container id="recommendation" style={{margin: "0 auto", paddingTop: 50, width: "40%", display: "inline-block", verticalAlign: "top"}}>
             {/* <MovieList movies={this.state.recommended} Height={500}/> */}
-            <RecommendList 
+            <RecommendTable
               fullMovies={this.state.fullMovies} 
               recommendMovies={this.state.recommended}
               // onEvent={this.onSelectedClick}
-              height={500}></RecommendList>
+              height={500}></RecommendTable>
           </Container>
         </div>
         <footer class="ui grid" style={{paddingTop: 50, margin: "0 auto", width: "80%", display: "inline-block", verticalAlign: "top"}}>
