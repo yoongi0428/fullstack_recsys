@@ -8,7 +8,9 @@ import RecommendList from './components/RecommendList'
 import CandidateTable from './components/CandidateTable'
 import ContextTable from './components/ContextTable'
 import RecommendTable from './components/RecommendTable'
-import { Container, Icon, Button } from "semantic-ui-react"
+import SearchForm from './components/SearchForm'
+import { Container, Icon, Button, Grid } from "semantic-ui-react"
+import _ from "lodash";
 
 class App extends React.Component {
   constructor(props){
@@ -17,14 +19,20 @@ class App extends React.Component {
     this.state = {
       fullMovies: [],
       candidates: [],
+      candidatesShow: [],
       selected: [],
-      recommended: []
+      recommended: [],
+      searchKey: "title",
+      searchValue: ""
     }
     this.loadMovieDB = this.loadMovieDB.bind(this);
     this.onRefreshClick = this.onRefreshClick.bind(this)
     this.onCandidateClick = this.onCandidateClick.bind(this)
     this.onSelectedClick = this.onSelectedClick.bind(this)
     this.onRecommendClick = this.onRecommendClick.bind(this)
+    this.onSearchClick = this.onSearchClick.bind(this)
+    this.onSearchChange = this.onSearchChange.bind(this)
+    this.onSelectChange = this.onSelectChange.bind(this)
 
     this.loadMovieDB();
   }
@@ -34,6 +42,7 @@ class App extends React.Component {
       response.json().then(data => {this.setState((prevState) => ({
         fullMovies: data.result,
         candidates: data.result,
+        candidatesShow: data.result,
         selected: prevState.selected,
         recommended: prevState.recommended
       }))}))
@@ -75,6 +84,38 @@ class App extends React.Component {
         }))
     }
   }
+
+  onSearchChange(e, data) {
+    this.setState((prevState) => ({
+      ...prevState,
+      searchValue: e.target.value
+    }))
+  }
+
+  onSelectChange(e, data) {
+    this.setState((prevState) => ({
+      ...prevState,
+      searchKey: data.value
+    }))
+  }
+
+  onSearchClick(type, query) {
+    if (query.length < 1){
+      this.setState((prevState) => ({
+        ...prevState,
+        candidatesShow: prevState.candidates
+      }))
+    }
+    else {
+      const re = new RegExp(_.escapeRegExp(query), "i");
+      const isMatch = type === "title" ? result => re.test(result.title) : result => re.test(result.genre);
+      const results = this.state.candidates.filter(isMatch)
+      this.setState((prevState) => ({
+        ...prevState,
+        candidatesShow: results
+      }))
+    }
+  }
   
   onRecommendClick(){
     if (this.state.selected.length < 1){
@@ -110,26 +151,39 @@ class App extends React.Component {
             <a class="ui image label"><img src="/images/avatar/small/joe.jpg"/></a>
           </div>
         </header>
+        {/* body */}
         <Container style={{width: "90%", marginTop: 40, paddingBottom: 50, textAlign: "center"}}>
-          {/* Full movie table */}
-          <Container id="full" style={{margin: "0 auto", width: "50%", display: "inline-block", verticalAlign: "top"}}>
-              <CandidateTable 
-              fullMovies={this.state.fullMovies} 
-              candidateMovies={this.state.candidates}
-              selectedMovies={this.state.selected}
-              onEvent={this.onCandidateClick}
-              height={600}></CandidateTable>
-          </Container>
-  
-          {/* Context table */}
-          <Container id="selected" style={{margin: "0 auto", width: "50%", display: "inline-block", verticalAlign: "top"}}>
-            {/* <MovieList movies={this.state.candidates} Height={600}/> */}
-            <ContextTable
-              fullMovies={this.state.fullMovies} 
-              contextMovies={this.state.selected}
-              onEvent={this.onSelectedClick}
-              height={600}></ContextTable>
-          </Container>
+          <Grid>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <SearchForm 
+                  onSearchChange={this.onSearchChange}
+                  onSearchClick={this.onSearchClick}
+                  onSelectChange={this.onSelectChange}
+                  searchKey={this.state.searchKey}>
+                </SearchForm>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <CandidateTable 
+                fullMovies={this.state.fullMovies} 
+                candidateMovies={this.state.candidatesShow}
+                selectedMovies={this.state.selected}
+                onEvent={this.onCandidateClick}
+                height={600}></CandidateTable>
+              </Grid.Column>
+              <Grid.Column>
+                <ContextTable
+                fullMovies={this.state.fullMovies} 
+                contextMovies={this.state.selected}
+                onEvent={this.onSelectedClick}
+                height={600}></ContextTable>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row></Grid.Row>
+            <Grid.Row></Grid.Row>
+          </Grid>
   
         </Container>
         {/* BUTTON: generate recommendation */}
