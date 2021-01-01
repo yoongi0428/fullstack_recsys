@@ -21,6 +21,7 @@ class Movie(db.Model):
     genre = db.Column(db.String(50))
     date = db.Column(db.Date)
     users = db.relationship('Interaction', back_populates='movie')
+    poster = db.Column(db.String(100))
 
     def __repr__(self):
         return "<movie '{}'>".format(self.title)

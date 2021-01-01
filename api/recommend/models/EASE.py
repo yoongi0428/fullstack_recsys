@@ -63,5 +63,4 @@ class EASE:
 
     def restore(self, ckpt):
         self.enc_w = np.load(ckpt)
-        print('restore:', self.enc_w.shape)
         self.num_items = self.enc_w.shape[0]

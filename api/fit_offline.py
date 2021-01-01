@@ -3,7 +3,7 @@ import sys
 import argparse
 from pathlib import Path
 
-WEB_DIR_PATH = Path(__file__).resolve().parents[1] / "web"
+WEB_DIR_PATH = Path(__file__).resolve().parents[1] / "backend"
 DB_PATH = WEB_DIR_PATH / "app.db"
 sys.path.append(WEB_DIR_PATH.__str__())
 
@@ -19,7 +19,7 @@ from recommend.models import model_to_cls
 from recommend.evaluate import extract_top_k, evaluate
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, default='EASE')
+parser.add_argument('--model', type=str, default='ItemKNN')
 parser.add_argument('--save_dir', type=str, default='recommend/ckpt')
 parser.add_argument('--test_ratio', type=float, default=0.1)
 parser.add_argument('--k', type=int, default=100)

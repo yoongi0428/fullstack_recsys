@@ -1,15 +1,11 @@
-// import React, { useEffect, useState } from 'react';
 import React from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import CandidateList from './components/CandidateList'
-import ContextList from './components/ContextList'
-import RecommendList from './components/RecommendList'
 import CandidateTable from './components/CandidateTable'
 import ContextTable from './components/ContextTable'
 import RecommendTable from './components/RecommendTable'
 import SearchForm from './components/SearchForm'
-import { Container, Icon, Button, Grid } from "semantic-ui-react"
+import { Container, Icon, Button, Grid, Select } from "semantic-ui-react"
 import _ from "lodash";
 
 class App extends React.Component {
@@ -23,7 +19,8 @@ class App extends React.Component {
       selected: [],
       recommended: [],
       searchKey: "title",
-      searchValue: ""
+      searchValue: "",
+      modelKey: "EASE"
     }
     this.loadMovieDB = this.loadMovieDB.bind(this);
     this.onRefreshClick = this.onRefreshClick.bind(this)
@@ -33,6 +30,7 @@ class App extends React.Component {
     this.onSearchClick = this.onSearchClick.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this)
     this.onSelectChange = this.onSelectChange.bind(this)
+    this.onModelSelectClick = this.onModelSelectClick.bind(this)
 
     this.loadMovieDB();
   }
@@ -52,6 +50,7 @@ class App extends React.Component {
     this.setState((prevState) => ({
       fullMovies: prevState.fullMovies,
       candidates: prevState.fullMovies,
+      candidatesShow: prevState.fullMovies,
       selected: [],
       recommended: []
     }))
@@ -61,12 +60,11 @@ class App extends React.Component {
     // check if movie already exists in candidates
     let alreadyExists = this.state.selected.includes(movie)
     if (!alreadyExists) {
-      let movieIndex = this.state.candidates.indexOf(movie);
+      let movieIndex = this.state.candidatesShow.indexOf(movie);
       this.setState((prevState) => ({
-        fullMovies: prevState.fullMovies,
-        candidates: [...prevState.candidates.slice(0, movieIndex), ...prevState.candidates.slice(movieIndex+1, prevState.candidates.length)],
+        ...prevState,
+        candidatesShow: [...prevState.candidatesShow.slice(0, movieIndex), ...prevState.candidatesShow.slice(movieIndex+1, prevState.candidatesShow.length)],
         selected: [...prevState.selected, movie],
-        recommended: prevState.recommended
       }))
     }
   }
@@ -77,10 +75,9 @@ class App extends React.Component {
       let movieIndex = this.state.selected.indexOf(movie);
       console.log(movieIndex);
       this.setState((prevState) => ({
-          fullMovies: prevState.fullMovies,
-          candidates: [...prevState.candidates, movie],
+          ...prevState,
+          candidatesShow: [...prevState.candidatesShow, movie],
           selected: [...prevState.selected.slice(0, movieIndex), ...prevState.selected.slice(movieIndex+1, prevState.selected.length)],
-          recommended: prevState.recommended
         }))
     }
   }
@@ -109,12 +106,18 @@ class App extends React.Component {
     else {
       const re = new RegExp(_.escapeRegExp(query), "i");
       const isMatch = type === "title" ? result => re.test(result.title) : result => re.test(result.genre);
-      const results = this.state.candidates.filter(isMatch)
+      const results = this.state.candidates.filter(isMatch).filter(data => this.state.candidatesShow.includes(data))
       this.setState((prevState) => ({
         ...prevState,
         candidatesShow: results
       }))
     }
+  }
+  onModelSelectClick(e, data){
+    this.setState((prevState) => ({
+      ...prevState,
+      modelKey: data.value
+    }))
   }
   
   onRecommendClick(){
@@ -129,7 +132,7 @@ class App extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         context: context_ids,
-        model: 'EASE'})
+        model: this.state.modelKey})
     };
     fetch('/recommend', requestOptions).then(response =>
       response.json().then(data => {this.setState((prevState) => ({
@@ -144,11 +147,14 @@ class App extends React.Component {
     return (
       <div className="App">
         <header class="ui grid" style={{marginTop:40, paddingBottom: 100}}>
-          <div style={{fontSize: "2rem", float: "left", width: "20%"}} onClick={this.onRefreshClick}> HOME </div>
-          <div style={{fontSize: "4rem", float: "left", width: "60%"}}> Full Stack RecSys </div>
-          <div style={{fontSize: "2rem", float: "left", width: "20%"}}>
+          <div style={{fontSize: "4rem", float: "left", width: "20%"}}>
+              <Icon link onClick={this.onRefreshClick} name='home' />
+          </div>
+          <div style={{fontFamily: 'Impact, sans-serif', fontSize: "4rem", float: "left", width: "60%"}}> Recommender System Playground </div>
+          <div style={{fontFamily: "Palatino Linotype, Book Antiqua, Palatino, serif", fontSize: "2rem", float: "left", width: "20%"}}>
             Yoonki Jeong
-            <a class="ui image label"><img src="/images/avatar/small/joe.jpg"/></a>
+            <a href='https://github.com/yoongi0428'><Icon name='github' /></a>
+            <a href='https://yoonki-j.info/'><Icon name='wordpress' /></a>
           </div>
         </header>
         {/* body */}
@@ -188,6 +194,13 @@ class App extends React.Component {
         </Container>
         {/* BUTTON: generate recommendation */}
         <div style={{textAlign: "center"}}>
+          <Select compact
+                  options={[
+                      { key: 'ease', text: 'EASE', value: 'EASE' },
+                      { key: 'itemknn', text: 'ItemKNN', value: 'ItemKNN' },
+                  ]}
+                  defaultValue={this.state.modelKey}
+                  onChange={(e, data) => this.onModelSelectClick(e, data)}/>
           <Button icon labelPosition='left' onClick={this.onRecommendClick}><Icon circular name='fire' color='red' />RECOMMEND!</Button>
         </div>
         

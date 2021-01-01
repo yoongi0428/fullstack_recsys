@@ -62,7 +62,7 @@ def user_item_dict(df):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_dir', type=str, default='data')
+    parser.add_argument('--data_dir', type=str, default='data/ml-100k')
     args = parser.parse_args()
 
     data_file = os.path.join(args.data_dir, 'u.data')
