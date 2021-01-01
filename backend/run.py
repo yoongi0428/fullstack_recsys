@@ -9,18 +9,6 @@ from flask import render_template
 from app import app, db, manager, migrate
 from app.model import User, Movie, Interaction
 
-@app.before_first_request
-def setup():
-	pass
-
-@app.route('/')
-@app.route('/index')
-def index():
-	# test_user = User.query.filter_by(id=900).first()
-	# return str([f'{I.movie_id}-{I.rating}' for I in test_user.movies])
-	# return 'Hello World!'
-	return render_template('index.html', title='Sign In')
-
 API_ADDRESS = 'http://0.0.0.0:8000%s'
 @app.route('/recommend', methods=['POST'])
 def recommend():
