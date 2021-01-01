@@ -5,10 +5,10 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from config import config_by_name, BASE_DIR
+from config import Config, BASE_DIR
 
 app = Flask(__name__)
-app.config.from_object(config_by_name[os.getenv('BOILERPLATE_ENV') or 'dev'])
+app.config.from_object(Config)
 app.app_context().push()
 
 db = SQLAlchemy()

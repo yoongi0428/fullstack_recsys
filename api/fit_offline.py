@@ -7,7 +7,7 @@ WEB_DIR_PATH = Path(__file__).resolve().parents[1] / "backend"
 DB_PATH = WEB_DIR_PATH / "app.db"
 sys.path.append(WEB_DIR_PATH.__str__())
 
-from config import config_by_name, BASE_DIR
+from config import Config, BASE_DIR
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from app.model import User, Movie, Interaction
@@ -26,7 +26,7 @@ parser.add_argument('--k', type=int, default=100)
 args = parser.parse_args()
 
 app = Flask(__name__)
-app.config.from_object(config_by_name[os.getenv('BOILERPLATE_ENV') or 'dev'])
+app.config.from_object(Config)
 app.app_context().push()
 
 db = SQLAlchemy()
