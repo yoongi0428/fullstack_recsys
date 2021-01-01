@@ -98,8 +98,10 @@ class ItemKNN:
         input_matrix = rating_matrix
         eval_output = input_matrix @ self.W_sparse
         eval_output[rating_matrix.nonzero()] = float('-inf')
+        if not isinstance(eval_output, np.ndarray):
+            eval_output = eval_output.toarray()
 
-        return eval_output.toarray()
+        return eval_output
         
     def recommend(self, user_context, top_k=10):
         user_vec = np.zeros((1, self.num_items))
@@ -125,5 +127,4 @@ class ItemKNN:
 
     def restore(self, ckpt):
         self.W_sparse = sp.load_npz(ckpt)
-        print('restore:', self.W_sparse.shape)
         self.num_items = self.W_sparse.shape[0]
