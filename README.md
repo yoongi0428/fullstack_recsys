@@ -5,11 +5,11 @@ To do this, we implement back-end and database server with Flask, front-end with
 
 # Setups
 ## **Stacks**
-<img src="img/flask.png" width="130">
-<img src="img/react.png" width="130">
-<img src="img/semantic_ui.png" width="80">
-<img src="img/pytorch.svg" width="150">
-<img src="img/numpy.svg" width="150">
+<a><img src="img/flask.png" width="130"></a>
+<a><img src="img/react.png" width="130">
+<a><img src="img/semantic_ui.png" width="80"></a>
+<a><img src="img/pytorch.svg" width="150"></a>
+<a><img src="img/numpy.svg" width="150"></a>
 
 ## **Requirements**
 This project requires packages such as Flask, PyTorch and numpy. Please check detailed list in `requirements.txt`. 
