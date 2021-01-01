@@ -1,16 +1,15 @@
 # Fullstack RecSys Project
-This repository is a toy project integrating machine learning with database, front-end and back-end. 
-We aim to build a small web service to provide top-K movie recommendation from user profile. 
-To do this, we implement back-end and database server with Flask, front-end with React and recommedation API with PyTorch and Numpy.
-
-# Setups
-## **Stacks**
 <a><img src="img/flask.png" width="130"></a>
 <a><img src="img/react.png" width="130">
 <a><img src="img/semantic_ui.png" width="80"></a>
 <a><img src="img/pytorch.svg" width="150"></a>
 <a><img src="img/numpy.svg" width="150"></a>
 
+This repository is a toy project integrating machine learning with database, front-end and back-end. 
+We aim to build a small web service to provide top-K movie recommendation from user profile. 
+To do this, we implement back-end and database server with Flask, front-end with React and recommedation API with PyTorch and Numpy.
+
+# Setups
 ## **Requirements**
 This project requires packages such as Flask, PyTorch and numpy. Please check detailed list in `requirements.txt`. 
 On your own environment, install required packages by `pip install -r requirements.txt`
