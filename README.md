@@ -80,19 +80,20 @@ cd ./react-front && npm start
 ```
 You can specify host and port in `react-front/.env`. By default, front-end server is run on `127.0.0.1:5052`.
 
+Edit name and personal links (github, blog) in `react-front/src/App.js:155`.
+
 ## Bind back-end & front-end
 You can run front-end and back-end script together using `concurrently`, which helps you run scripts parallel.
 
 You can install `concurrently` by `npm install -g concurrently`. 
 In `react-front/package.json`, add binding script (e.g. `"start-all": "concurrently \"react-scripts start\" \"cd ../backend && flask run\""`).
 
-Now, `npm start-all` runs both back-end and front-end.
+Now, `npm run-script start-all` runs both back-end and front-end.
 
 # TODO
 - [ ] Show movie metadata on click.
 - [ ] Add SOTA neural and non-neural recommenders.
 - [ ] Fancier front-end (Header, Footer, etc.)
-
 
 # Reference
 1. [How To Create a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project)
