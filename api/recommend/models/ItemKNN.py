@@ -99,7 +99,7 @@ class ItemKNN:
         eval_output = input_matrix @ self.W_sparse
         eval_output[rating_matrix.nonzero()] = float('-inf')
 
-        return eval_output
+        return eval_output.toarray()
         
     def recommend(self, user_context, top_k=10):
         user_vec = np.zeros((1, self.num_items))

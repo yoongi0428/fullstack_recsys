@@ -3,7 +3,7 @@ import numpy as np
 
 def extract_top_k(prediction, k):
     # top_k item index (not sorted)
-    relevant_items_partition = (-prediction).argpartition(k, 1)[:, 0:k]
+    relevant_items_partition = np.argpartition(-prediction, k, 1)[:, 0:k]
     
     # top_k item score (not sorted)    
     relevant_items_partition_original_value = np.take_along_axis(prediction, relevant_items_partition, 1)
