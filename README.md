@@ -1,4 +1,5 @@
 # Fullstack RecSys Project
+<img src="img/main_page.png"> </br>
 <a><img src="img/flask.png" width="130"></a>
 <a><img src="img/react.png" width="130">
 <a><img src="img/semantic_ui.png" width="80"></a>
